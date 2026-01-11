@@ -1,11 +1,12 @@
 import { ConfirmDialog } from "@/components/common/confirm-dialog";
 import { ErrorMessage } from "@/components/common/error-message";
 import { LoadingSpinner } from "@/components/common/loading-spinner";
-import { useQuizzes } from "@/lib/hooks/useQuizzes";
+import { useQuiz, useQuizzes } from "@/lib/hooks/useQuizzes";
 import { QuizEmptyState } from "./QuizEmptyState";
 import { QuizListHeader } from "./QuizListHeader";
 import { QuizTable } from "./QuizTable";
 import { useQuizListActions } from "./useQuizListActions";
+import { QuizFormDialog } from "./QuizFormDialog";
 
 export function QuizList() {
   const { data: quizzes, isLoading, error, refetch } = useQuizzes();
@@ -17,7 +18,14 @@ export function QuizList() {
     handleTakeQuiz,
     handleEditQuiz,
     handleCreateQuiz,
+    createDialogOpen,
+    setCreateDialogOpen,
+    editDialogOpen,
+    setEditDialogOpen,
+    quizToEdit,
   } = useQuizListActions();
+
+  const { data: quizToEditData } = useQuiz(quizToEdit || 0);
 
   if (isLoading)
     return <LoadingSpinner message="Loading quizzes..." size="md" />;
@@ -45,6 +53,22 @@ export function QuizList() {
           onEditQuiz={handleEditQuiz}
           onTakeQuiz={handleTakeQuiz}
           onDeleteQuiz={handleDeleteClick}
+        />
+      )}
+
+      <QuizFormDialog
+        open={createDialogOpen}
+        onOpenChange={setCreateDialogOpen}
+        mode="create"
+      />
+
+      {quizToEdit && (
+        <QuizFormDialog
+          open={editDialogOpen}
+          onOpenChange={setEditDialogOpen}
+          mode="edit"
+          quizId={quizToEdit}
+          defaultValues={quizToEditData}
         />
       )}
 

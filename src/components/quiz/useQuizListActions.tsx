@@ -6,6 +6,10 @@ export function useQuizListActions() {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [quizToDelete, setQuizToDelete] = useState<number | null>(null);
 
+  const [createDialogOpen, setCreateDialogOpen] = useState(false);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [quizToEdit, setQuizToEdit] = useState<number | null>(null);
+
   const handleDeleteClick = (quizId: number, e: React.MouseEvent) => {
     e.stopPropagation();
     setQuizToDelete(quizId);
@@ -27,18 +31,17 @@ export function useQuizListActions() {
 
   const handleTakeQuiz = (quizId: number, e: React.MouseEvent) => {
     e.stopPropagation();
-
     // todo: Navigate to take quiz page
     console.log("Take quiz:", quizId);
   };
 
   const handleEditQuiz = (quizId: number) => {
-    // todo: navigate to edit page
-    console.log("Edit quiz", quizId);
+    setQuizToEdit(quizId);
+    setEditDialogOpen(true);
   };
 
   const handleCreateQuiz = () => {
-    console.log("Create new quiz");
+    setCreateDialogOpen(true);
   };
 
   return {
@@ -50,5 +53,10 @@ export function useQuizListActions() {
     handleTakeQuiz,
     handleEditQuiz,
     handleCreateQuiz,
+    createDialogOpen,
+    setCreateDialogOpen,
+    editDialogOpen,
+    setEditDialogOpen,
+    quizToEdit,
   };
 }
