@@ -3,7 +3,7 @@ import { CreateQuizSchema, type CreateQuiz } from "@/lib/schemas/quiz.schema";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { Question } from "@/lib/schemas/question.schema";
-import { useEffect } from "react";
+import { useEffect, useMemo, useCallback } from "react";
 
 interface UseQuizFormOptions {
   mode: "create" | "edit";
@@ -33,41 +33,52 @@ export function useQuizForm({
     if (defaultValues) {
       form.reset(defaultValues);
     }
-  }, [defaultValues, form]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [defaultValues]);
 
-  const addQuestion = () => {
+  const addQuestion = useCallback(() => {
     const current = form.getValues("questions");
     form.setValue("questions", [...current, { question: "", answer: "" }], {
       shouldValidate: false,
     });
-  };
+  }, [form]);
 
-  const removeQuestion = (index: number) => {
-    const current = form.getValues("questions");
-    form.setValue(
-      "questions",
-      current.filter((_, i) => i !== index),
-      {
+  const removeQuestion = useCallback(
+    (index: number) => {
+      const current = form.getValues("questions");
+      form.setValue(
+        "questions",
+        current.filter((_, i) => i !== index),
+        {
+          shouldValidate: true,
+        }
+      );
+    },
+    [form]
+  );
+
+  const recycleQuestions = useCallback(
+    (questions: Question[]) => {
+      const current = form.getValues("questions");
+      form.setValue("questions", [...current, ...questions], {
         shouldValidate: true,
-      }
-    );
-  };
-
-  const recycleQuestions = (questions: Question[]) => {
-    const current = form.getValues("questions");
-    form.setValue("questions", [...current, ...questions], {
-      shouldValidate: true,
-    });
-  };
+      });
+    },
+    [form]
+  );
 
   const questions = useWatch({
     control: form.control,
     name: "questions",
   });
 
-  const existingQuestionIds = (questions || [])
-    .map((q) => q.id)
-    .filter((id): id is number => id !== undefined);
+  const existingQuestionIds = useMemo(
+    () =>
+      (questions || [])
+        .map((q) => q.id)
+        .filter((id): id is number => id !== undefined),
+    [questions]
+  );
 
   const handleSubmit = form.handleSubmit((data) => {
     if (mode === "create") {

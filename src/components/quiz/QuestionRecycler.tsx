@@ -1,6 +1,6 @@
 import { useQuestions } from "@/lib/hooks/useQuestions";
 import type { Question } from "@/lib/schemas/question.schema";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { LoadingSpinner } from "../common/loading-spinner";
 import { ErrorMessage } from "../common/error-message";
 import { EmptyState } from "../common/empty-state";
@@ -12,6 +12,7 @@ import { Separator } from "../ui/separator";
 import { ScrollArea } from "../ui/scroll-area";
 import { QuestionCard } from "./QuestionCard";
 import { Checkbox } from "../ui/checkbox";
+import { useCallback, memo } from "react";
 
 interface QuestionRecyclerProps {
   onRecycle: (questions: Question[]) => void;
@@ -25,7 +26,14 @@ export function QuestionRecycler({
   const { data: questions, isLoading, error, refetch } = useQuestions();
   const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
 
-  const handleToggle = (questionId: number) => {
+  const availableQuestions = useMemo(
+    () =>
+      questions?.filter((q) => q.id && !existingQuestionIds?.includes(q.id)) ||
+      [],
+    [questions, existingQuestionIds]
+  );
+
+  const handleToggle = useCallback((questionId: number) => {
     setSelectedIds((prev) => {
       const next = new Set(prev);
       if (next.has(questionId)) {
@@ -35,21 +43,25 @@ export function QuestionRecycler({
       }
       return next;
     });
-  };
+  }, []);
 
-  const handleRecycle = () => {
+  const handleRecycle = useCallback(() => {
     if (!questions) return;
     const selected = questions.filter((q) => q.id && selectedIds.has(q.id));
     onRecycle(selected);
     setSelectedIds(new Set());
-  };
+  }, [questions, selectedIds, onRecycle]);
 
-  const handleSelectAll = () => {
+  const handleSelectAll = useCallback(() => {
     const ids = availableQuestions
       ?.map((q) => q.id)
       .filter((id): id is number => id !== undefined);
     setSelectedIds(new Set(ids));
-  };
+  }, [availableQuestions]);
+
+  const handleClearSelection = useCallback(() => {
+    setSelectedIds(new Set());
+  }, []);
 
   if (isLoading)
     return <LoadingSpinner message="Loading questions..." size="md" />;
@@ -59,14 +71,10 @@ export function QuestionRecycler({
       <ErrorMessage
         title="Failed to load questions"
         message={error.message}
-        onRetry={() => refetch()}
+        onRetry={refetch}
       />
     );
   }
-
-  const availableQuestions =
-    questions?.filter((q) => q.id && !existingQuestionIds?.includes(q.id)) ||
-    [];
 
   if (availableQuestions?.length === 0) {
     return (
@@ -95,7 +103,7 @@ export function QuestionRecycler({
             {selectedCount > 0 ? (
               <>
                 <Button
-                  onClick={() => setSelectedIds(new Set())}
+                  onClick={handleClearSelection}
                   size="sm"
                   variant="ghost"
                   type="button"
@@ -124,32 +132,27 @@ export function QuestionRecycler({
 
       <ScrollArea className="h-[300px]">
         <div className="space-y-4 pr-4">
-          {availableQuestions?.map((question) => (
-            <div
-              key={question.id}
-              onClick={() => question.id && handleToggle(question.id)}
-              className="cursor-pointer hover:bg-slate-50 rounded-lg transition-colors"
-            >
+          {availableQuestions?.map((question) => {
+            const isSelected = question.id
+              ? selectedIds.has(question.id)
+              : false;
+            return (
               <QuestionCard
+                key={question.id}
                 question={question}
                 showAnswer={true}
-                className={
-                  question.id && selectedIds.has(question.id)
-                    ? "border-blue-500 bg-blue-50/50"
-                    : ""
-                }
+                className={isSelected ? "border-blue-500 bg-blue-50/50" : ""}
                 actions={
                   <Checkbox
-                    checked={question.id ? selectedIds.has(question.id) : false}
+                    checked={isSelected}
                     onCheckedChange={() =>
                       question.id && handleToggle(question.id)
                     }
-                    onClick={(e) => e.stopPropagation()}
                   />
                 }
               />
-            </div>
-          ))}
+            );
+          })}
         </div>
       </ScrollArea>
     </div>
