@@ -18,7 +18,6 @@ interface QuizTableProps {
 export function QuizTable({
   quizzes,
   onEditQuiz,
-  onTakeQuiz,
   onDeleteQuiz,
 }: QuizTableProps) {
   return (
@@ -37,7 +36,6 @@ export function QuizTable({
               key={quiz.id}
               quiz={quiz}
               onEdit={onEditQuiz}
-              onTakeQuiz={onTakeQuiz}
               onDelete={onDeleteQuiz}
             />
           ))}

@@ -24,17 +24,6 @@ export function useQuizListActions() {
     }
   };
 
-  const handleCancelDelete = () => {
-    setDeleteDialogOpen(false);
-    setQuizToDelete(null);
-  };
-
-  const handleTakeQuiz = (quizId: number, e: React.MouseEvent) => {
-    e.stopPropagation();
-    // todo: Navigate to take quiz page
-    console.log("Take quiz:", quizId);
-  };
-
   const handleEditQuiz = (quizId: number) => {
     setQuizToEdit(quizId);
     setEditDialogOpen(true);
@@ -49,8 +38,6 @@ export function useQuizListActions() {
     setDeleteDialogOpen,
     handleDeleteClick,
     handleConfirmDelete,
-    handleCancelDelete,
-    handleTakeQuiz,
     handleEditQuiz,
     handleCreateQuiz,
     createDialogOpen,

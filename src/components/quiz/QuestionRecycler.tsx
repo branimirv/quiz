@@ -12,7 +12,7 @@ import { Separator } from "../ui/separator";
 import { ScrollArea } from "../ui/scroll-area";
 import { QuestionCard } from "./QuestionCard";
 import { Checkbox } from "../ui/checkbox";
-import { useCallback, memo } from "react";
+import { useCallback } from "react";
 
 interface QuestionRecyclerProps {
   onRecycle: (questions: Question[]) => void;

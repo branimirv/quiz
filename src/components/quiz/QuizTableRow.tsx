@@ -5,16 +5,10 @@ import QuizActions from "./QuizActions";
 interface QuizTableRowProps {
   quiz: Quiz;
   onEdit: (quizId: number) => void;
-  onTakeQuiz: (quizId: number, e: React.MouseEvent) => void;
   onDelete: (quizId: number, e: React.MouseEvent) => void;
 }
 
-export function QuizTableRow({
-  quiz,
-  onEdit,
-  onTakeQuiz,
-  onDelete,
-}: QuizTableRowProps) {
+export function QuizTableRow({ quiz, onEdit, onDelete }: QuizTableRowProps) {
   const questionCount = quiz.questions.length;
   const questionText = questionCount === 1 ? "question" : "questions";
 
@@ -28,10 +22,7 @@ export function QuizTableRow({
         {questionCount} {questionText}
       </TableCell>
       <TableCell className="text-right">
-        <QuizActions
-          onTakeQuiz={(e) => onTakeQuiz(quiz.id, e)}
-          onDelete={(e) => onDelete(quiz.id, e)}
-        />
+        <QuizActions quizId={quiz.id} onDelete={(e) => onDelete(quiz.id, e)} />
       </TableCell>
     </TableRow>
   );

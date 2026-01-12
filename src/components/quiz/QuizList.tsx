@@ -15,7 +15,6 @@ export function QuizList() {
     setDeleteDialogOpen,
     handleDeleteClick,
     handleConfirmDelete,
-    handleTakeQuiz,
     handleEditQuiz,
     handleCreateQuiz,
     createDialogOpen,
@@ -53,7 +52,6 @@ export function QuizList() {
         <QuizTable
           quizzes={quizzes}
           onEditQuiz={handleEditQuiz}
-          onTakeQuiz={handleTakeQuiz}
           onDeleteQuiz={handleDeleteClick}
         />
       )}
