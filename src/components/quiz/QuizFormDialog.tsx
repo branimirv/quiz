@@ -7,6 +7,7 @@ import {
   DialogTitle,
 } from "../ui/dialog";
 import { QuizForm } from "./QuizForm";
+import { LoadingSpinner } from "../common/loading-spinner";
 
 interface QuizFormDialogProps {
   open: boolean;
@@ -14,6 +15,7 @@ interface QuizFormDialogProps {
   mode: "create" | "edit";
   quizId?: number;
   defaultValues?: CreateQuiz;
+  isLoading?: boolean;
 }
 
 export function QuizFormDialog({
@@ -22,6 +24,7 @@ export function QuizFormDialog({
   mode,
   quizId,
   defaultValues,
+  isLoading = false,
 }: QuizFormDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -36,13 +39,19 @@ export function QuizFormDialog({
               : "Update quiz information and questions"}
           </DialogDescription>
         </DialogHeader>
-        <QuizForm
-          mode={mode}
-          quizId={quizId}
-          defaultValues={defaultValues}
-          onSuccess={() => onOpenChange(false)}
-          onCancel={() => onOpenChange(false)}
-        />
+        {isLoading ? (
+          <div className="py-8">
+            <LoadingSpinner message="Loading quiz data..." size="md" />
+          </div>
+        ) : (
+          <QuizForm
+            mode={mode}
+            quizId={quizId}
+            defaultValues={defaultValues}
+            onSuccess={() => onOpenChange(false)}
+            onCancel={() => onOpenChange(false)}
+          />
+        )}
       </DialogContent>
     </Dialog>
   );

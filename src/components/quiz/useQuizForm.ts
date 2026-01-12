@@ -3,6 +3,7 @@ import { CreateQuizSchema, type CreateQuiz } from "@/lib/schemas/quiz.schema";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { Question } from "@/lib/schemas/question.schema";
+import { useEffect } from "react";
 
 interface UseQuizFormOptions {
   mode: "create" | "edit";
@@ -27,6 +28,12 @@ export function useQuizForm({
       questions: [],
     },
   });
+
+  useEffect(() => {
+    if (defaultValues) {
+      form.reset(defaultValues);
+    }
+  }, [defaultValues, form]);
 
   const addQuestion = () => {
     const current = form.getValues("questions");

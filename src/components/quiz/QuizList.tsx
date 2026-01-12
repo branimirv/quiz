@@ -3,10 +3,10 @@ import { ErrorMessage } from "@/components/common/error-message";
 import { LoadingSpinner } from "@/components/common/loading-spinner";
 import { useQuiz, useQuizzes } from "@/lib/hooks/useQuizzes";
 import { QuizEmptyState } from "./QuizEmptyState";
+import { QuizFormDialog } from "./QuizFormDialog";
 import { QuizListHeader } from "./QuizListHeader";
 import { QuizTable } from "./QuizTable";
 import { useQuizListActions } from "./useQuizListActions";
-import { QuizFormDialog } from "./QuizFormDialog";
 
 export function QuizList() {
   const { data: quizzes, isLoading, error, refetch } = useQuizzes();
@@ -25,7 +25,9 @@ export function QuizList() {
     quizToEdit,
   } = useQuizListActions();
 
-  const { data: quizToEditData } = useQuiz(quizToEdit || 0);
+  const { data: quizToEditData, isLoading: isLoadingQuizData } = useQuiz(
+    quizToEdit || 0
+  );
 
   if (isLoading)
     return <LoadingSpinner message="Loading quizzes..." size="md" />;
@@ -35,7 +37,7 @@ export function QuizList() {
       <ErrorMessage
         title="Failed to load quizzes"
         message={error.message}
-        onRetry={() => refetch()}
+        onRetry={refetch}
       />
     );
   }
@@ -64,11 +66,13 @@ export function QuizList() {
 
       {quizToEdit && (
         <QuizFormDialog
+          key={quizToEdit}
           open={editDialogOpen}
           onOpenChange={setEditDialogOpen}
           mode="edit"
           quizId={quizToEdit}
           defaultValues={quizToEditData}
+          isLoading={isLoadingQuizData}
         />
       )}
 
