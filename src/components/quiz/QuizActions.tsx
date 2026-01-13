@@ -17,8 +17,8 @@ export default function QuizActions({ quizId, onDelete }: QuizActionsProps) {
         onClick={(e) => e.stopPropagation()}
       >
         <Link to="/quiz/$quizId/take" params={{ quizId: String(quizId) }}>
-          <Play className="h-4 w-4 mr-1" />
-          Take Quiz
+          <Play className="h-4 w-4 md:mr-1" />
+          <span className="hidden md:inline">Take Quiz</span>
         </Link>
       </Button>
       <Button size="sm" variant="destructive" onClick={onDelete}>

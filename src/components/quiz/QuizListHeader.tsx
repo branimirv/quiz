@@ -16,7 +16,7 @@ export function QuizListHeader({ onCreateClick }: QuizListHeaderProps) {
       </div>
       <Button onClick={onCreateClick} size="lg">
         <Plus className="h-4 w-4" strokeWidth={2.5} />
-        Create New Quiz
+        <span className="hidden sm:inline">Create New Quiz</span>
       </Button>
     </div>
   );

@@ -17,9 +17,11 @@ export function QuizTableRow({ quiz, onEdit, onDelete }: QuizTableRowProps) {
       className="cursor-pointer hover:bg-slate-50"
       onClick={() => onEdit(quiz.id)}
     >
-      <TableCell className="font-medium">{quiz.name}</TableCell>
+      <TableCell className="font-medium whitespace-normal md:whitespace-nowrap">
+        {quiz.name}
+      </TableCell>
       <TableCell className="text-center text-slate-600">
-        {questionCount} {questionText}
+        {questionCount} <span className="hidden md:inline">{questionText}</span>
       </TableCell>
       <TableCell className="text-right">
         <QuizActions quizId={quiz.id} onDelete={(e) => onDelete(quiz.id, e)} />

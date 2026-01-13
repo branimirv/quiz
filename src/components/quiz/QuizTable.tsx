@@ -11,7 +11,6 @@ import { QuizTableRow } from "./QuizTableRow";
 interface QuizTableProps {
   quizzes: Quiz[];
   onEditQuiz: (quizId: number) => void;
-  onTakeQuiz: (quizId: number, e: React.MouseEvent) => void;
   onDeleteQuiz: (quizId: number, e: React.MouseEvent) => void;
 }
 
