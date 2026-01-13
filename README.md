@@ -25,9 +25,11 @@ A modern and interactive Quiz Maker application built with React, designed to al
 
     - Running the application
     - To start the development server locally:
+
       `pnpm run dev`
 
     - Building for production:
+
       `pnpm run build`
 
 ## Features
