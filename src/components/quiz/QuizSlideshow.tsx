@@ -8,6 +8,8 @@ import { QuizSlideProgress } from "./QuizSlideProgress";
 import { QuizSlideQuestion } from "./QuizSlideQuestion";
 import { QuizSlideControls } from "./QuizSlideControls";
 import { ErrorMessage } from "../common/error-message";
+import { KeyboardShortcutsHint } from "./KeyboardShortcutsHint";
+import { useKeyboardNavigation } from "./useKeyboardNavigation";
 
 interface QuizSlideshowProps {
   quizId: number;
@@ -38,6 +40,17 @@ export function QuizSlideshow({ quizId, onClose }: QuizSlideshowProps) {
   useEffect(() => {
     reset();
   }, [quizId, reset]);
+
+  useKeyboardNavigation({
+    onPrevious: goToPrevious,
+    onNext: goToNext,
+    onReveal: toggleReveal,
+    onExit: handleHome,
+    onReset: reset,
+    canGoPrevious: !isFirstQuestion,
+    canGoNext: !isLastQuestion,
+    enabled: !isLoading && !error && !!quiz,
+  });
 
   if (isLoading) {
     return (
@@ -73,6 +86,8 @@ export function QuizSlideshow({ quizId, onClose }: QuizSlideshowProps) {
 
   return (
     <div className="max-w-4xl mx-auto py-8 px-4 space-y-8">
+      <KeyboardShortcutsHint />
+
       <div className="space-y-4">
         <h1 className="text-3xl md:text-4xl font-bold text-slate-900">
           {quiz.name}
