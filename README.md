@@ -15,7 +15,7 @@ A modern and interactive Quiz Maker application built with React, designed to al
 
     `git clone https://github.com/branimirv/quiz.git`
 
-    `cd enterwell-quiz`
+    `cd quiz`
 
 2.  **Install dependencies:**
 
