@@ -36,6 +36,7 @@ A modern and interactive Quiz Maker application built with React, designed to al
 
 - **Create & Edit Quizzes**: Intuitive forms for adding and modifying quiz names and questions.
 - **Question Recycling**: Reuse existing questions from previous quizzes to save time.
+- **Smart Search for Recycled Questions**: Real-time debounced search to quickly find questions by text or answer (supports 15-25+ questions efficiently).
 - **Interactive Quiz Slideshow**: Take quizzes one question at a time with a reveal answer button.
 - **Shareable Quiz URLs**: Each quiz slideshow has a unique, shareable link.
 - **Keyboard Navigation**: Navigate the slideshow using arrow keys, spacebar, and escape.
