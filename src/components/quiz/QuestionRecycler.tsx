@@ -1,10 +1,10 @@
 import { useQuestions } from "@/lib/hooks/useQuestions";
 import type { Question } from "@/lib/schemas/question.schema";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useCallback } from "react";
 import { LoadingSpinner } from "../common/loading-spinner";
 import { ErrorMessage } from "../common/error-message";
 import { EmptyState } from "../common/empty-state";
-import { Inbox } from "lucide-react";
+import { Inbox, Search } from "lucide-react";
 import { SectionHeader } from "../common/section-header";
 import { Button } from "../ui/button";
 import { Recycle } from "lucide-react";
@@ -12,7 +12,8 @@ import { Separator } from "../ui/separator";
 import { ScrollArea } from "../ui/scroll-area";
 import { QuestionCard } from "./QuestionCard";
 import { Checkbox } from "../ui/checkbox";
-import { useCallback } from "react";
+import { SearchInput } from "../common/search-input";
+import { useSearch } from "@/lib/hooks/useSearch";
 
 interface QuestionRecyclerProps {
   onRecycle: (questions: Question[]) => void;
@@ -32,6 +33,18 @@ export function QuestionRecycler({
       [],
     [questions, existingQuestionIds]
   );
+
+  const {
+    searchTerm,
+    setSearchTerm,
+    filteredItems: filteredQuestions,
+    isSearching,
+    hasResults,
+    resultsCount,
+  } = useSearch({
+    items: availableQuestions,
+    searchFields: ["question", "answer"],
+  });
 
   const handleToggle = useCallback((questionId: number) => {
     setSelectedIds((prev) => {
@@ -53,11 +66,11 @@ export function QuestionRecycler({
   }, [questions, selectedIds, onRecycle]);
 
   const handleSelectAll = useCallback(() => {
-    const ids = availableQuestions
+    const ids = filteredQuestions
       ?.map((q) => q.id)
       .filter((id): id is number => id !== undefined);
     setSelectedIds(new Set(ids));
-  }, [availableQuestions]);
+  }, [filteredQuestions]);
 
   const handleClearSelection = useCallback(() => {
     setSelectedIds(new Set());
@@ -96,6 +109,8 @@ export function QuestionRecycler({
         description={
           selectedCount > 0
             ? `${selectedCount} selected`
+            : searchTerm
+            ? `${resultsCount} of ${availableQuestions.length} questions`
             : "Select questions to add"
         }
         action={
@@ -121,6 +136,7 @@ export function QuestionRecycler({
                 size="sm"
                 variant="outline"
                 type="button"
+                disabled={!hasResults}
               >
                 Select All
               </Button>
@@ -128,33 +144,52 @@ export function QuestionRecycler({
           </div>
         }
       />
+
+      {/* Search Input */}
+      <SearchInput
+        value={searchTerm}
+        onChange={setSearchTerm}
+        placeholder="Search questions or answers..."
+        isSearching={isSearching}
+      />
+
       <Separator />
 
-      <ScrollArea className="h-[300px]">
-        <div className="space-y-4 pr-4">
-          {availableQuestions?.map((question) => {
-            const isSelected = question.id
-              ? selectedIds.has(question.id)
-              : false;
-            return (
-              <QuestionCard
-                key={question.id}
-                question={question}
-                showAnswer={true}
-                className={isSelected ? "border-blue-500 bg-blue-50/50" : ""}
-                actions={
-                  <Checkbox
-                    checked={isSelected}
-                    onCheckedChange={() =>
-                      question.id && handleToggle(question.id)
-                    }
-                  />
-                }
-              />
-            );
-          })}
-        </div>
-      </ScrollArea>
+      {/* Empty search results */}
+      {searchTerm && !hasResults ? (
+        <EmptyState
+          icon={<Search className="h-12 w-12 text-slate-300" />}
+          title="No questions found"
+          description={`No questions match "${searchTerm}"`}
+          className="py-8"
+        />
+      ) : (
+        <ScrollArea className="h-[300px]">
+          <div className="space-y-4 pr-4">
+            {filteredQuestions.map((question) => {
+              const isSelected = question.id
+                ? selectedIds.has(question.id)
+                : false;
+              return (
+                <QuestionCard
+                  key={question.id}
+                  question={question}
+                  showAnswer={true}
+                  className={isSelected ? "border-blue-500 bg-blue-50/50" : ""}
+                  actions={
+                    <Checkbox
+                      checked={isSelected}
+                      onCheckedChange={() =>
+                        question.id && handleToggle(question.id)
+                      }
+                    />
+                  }
+                />
+              );
+            })}
+          </div>
+        </ScrollArea>
+      )}
     </div>
   );
 }
