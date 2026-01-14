@@ -1,4 +1,3 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   createQuiz,
   deleteQuiz,
@@ -6,7 +5,8 @@ import {
   getQuizById,
   updateQuiz,
 } from "@/lib/api/quizzes";
-import type { CreateQuiz, UpdateQuiz } from "../schemas/quiz.schema";
+import type { CreateQuiz, UpdateQuiz } from "@/lib/schemas/quiz.schema";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 /**
  * Query key factory for quizzes

@@ -1,7 +1,7 @@
-import { getStorageData, setStorageData } from "../storage/storage";
-import type { CreateQuiz, Quiz, UpdateQuiz } from "../schemas/quiz.schema";
+import type { Question } from "@/lib/schemas/question.schema";
+import type { CreateQuiz, Quiz, UpdateQuiz } from "@/lib/schemas/quiz.schema";
+import { getStorageData, setStorageData } from "@/lib/storage/storage";
 import type { ApiError } from "@/types/api.types";
-import type { Question } from "../schemas/question.schema";
 
 const delay = (ms: number = 300) =>
   new Promise((resolve) => setTimeout(resolve, ms));

@@ -85,7 +85,7 @@ export function QuizSlideshow({ quizId, onClose }: QuizSlideshowProps) {
   }
 
   return (
-    <div className="max-w-4xl mx-auto py-8 px-4 space-y-8">
+    <div className="max-w-4xl mx-auto py-2 md:py-8 px-4 space-y-8">
       <KeyboardShortcutsHint />
 
       <div className="space-y-4">

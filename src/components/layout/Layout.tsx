@@ -19,7 +19,7 @@ export function Layout({ children }: LayoutProps) {
         </div>
       </header>
       <main>
-        <div className="container max-w-5xl mx-auto px-4 py-8 flex-1">
+        <div className="container max-w-5xl mx-auto px-4 py-4 md:py-8 flex-1">
           {children}
         </div>
       </main>

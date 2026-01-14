@@ -1,5 +1,5 @@
-import type { Question } from "../schemas/question.schema";
-import { getStorageData } from "../storage/storage";
+import type { Question } from "@/lib/schemas/question.schema";
+import { getStorageData } from "@/lib/storage/storage";
 
 const delay = (ms: number = 300) =>
   new Promise((resolve) => setTimeout(resolve, ms));

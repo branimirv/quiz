@@ -18,8 +18,8 @@ export function QuizSlideControls({
 }: QuizSlideControlsProps) {
   return (
     <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-      {/* Previous and Next buttons - side by side on mobile and desktop */}
-      <div className="flex items-center justify-between md:justify-start gap-4 order-1 md:order-0">
+      {/* Previous and Next buttons - side by side on mobile, spread out on desktop */}
+      <div className="flex items-center justify-between md:contents gap-4">
         <Button
           onClick={onPrevious}
           disabled={isFirstQuestion}
@@ -31,26 +31,37 @@ export function QuizSlideControls({
           Previous
         </Button>
 
+        {/* Back to List button - centered on mobile, in middle on desktop */}
+        <Button
+          onClick={onHome}
+          variant="ghost"
+          size="lg"
+          className="hidden md:flex"
+        >
+          <Home className="h-5 w-5 mr-2" />
+          Back to List
+        </Button>
+
         <Button
           onClick={onNext}
           disabled={isLastQuestion}
           variant="outline"
           size="lg"
-          className="min-w-[120px] md:order-last"
+          className="min-w-[120px]"
         >
           Next
           <ChevronRight className="h-5 w-5 ml-1" />
         </Button>
       </div>
 
-      {/* Back to List button - centered on mobile, in between on desktop */}
+      {/* Back to List button - visible only on mobile */}
       <Button
         onClick={onHome}
         variant="ghost"
         size="lg"
-        className="order-2 md:order-0 mx-auto md:mx-0"
+        className="md:hidden mx-auto"
       >
-        <Home className="h-5 w-5 md:mr-2" />
+        <Home className="h-5 w-5 mr-2" />
         Back to List
       </Button>
     </div>

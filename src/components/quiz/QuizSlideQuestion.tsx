@@ -19,14 +19,14 @@ export function QuizSlideQuestion({
 }: QuizSlideQuestionProps) {
   return (
     <div className="space-y-6">
-      <Card className="p-8 md:p-12">
+      <Card className="p-4 md:p-12">
         <div className="mb-4">
           <span className="inline-block px-3 py-1 text-sm font-medium bg-blue-100 text-blue-700 rounded-full">
             Question {questionNumber}
           </span>
         </div>
 
-        <h2 className="text-2xl md:text-3xl font-semibold text-slate-900 mb-8">
+        <h2 className="text-2xl md:text-3xl font-semibold text-slate-900">
           {question.question}
         </h2>
 
