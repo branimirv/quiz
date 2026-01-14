@@ -26,7 +26,7 @@ export function QuizSlideQuestion({
           </span>
         </div>
 
-        <h2 className="text-2xl md:text-3xl font-semibold text-slate-900">
+        <h2 className="text-xl md:text-3xl font-semibold text-slate-900">
           {question.question}
         </h2>
 

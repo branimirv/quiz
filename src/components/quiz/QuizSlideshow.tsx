@@ -89,7 +89,7 @@ export function QuizSlideshow({ quizId, onClose }: QuizSlideshowProps) {
       <KeyboardShortcutsHint />
 
       <div className="space-y-4">
-        <h1 className="text-3xl md:text-4xl font-bold text-slate-900">
+        <h1 className="text-2xl md:text-4xl font-bold text-slate-900">
           {quiz.name}
         </h1>
         <QuizSlideProgress {...progress} />
